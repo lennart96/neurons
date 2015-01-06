@@ -1,15 +1,22 @@
-__all__ = 'Once', 'Every', 'After', 'Continu', 'Network'
+__all__ = 'Once', 'For', 'Every', 'After', 'Continu', 'Network'
 
 def test():
-    factor = 3
-    m = Model(factor*1000)
+    m = Model(3*1000)
     out = []
     d = out.append
+    count = 0
+    def add():
+        nonlocal count
+        count += 1
     m.add_action(lambda:d(m.steps), Once())
     m.add_action(lambda:d(m.steps), Every(3))
     m.add_action(lambda:d(m.steps), After(3))
-    m.simulate_ms(15)
-    assert out == [0, 3*factor, 3*factor, 6*factor, 9*factor, 12*factor]
+    m.add_action(lambda:d(m.steps), For(2))
+    m.add_action(add              , Continu())
+    m.simulate_ms(12)
+    correct = [0, 0, 1, 2, 3, 4, 5, 9, 9, 18, 27]
+    assert out == correct
+    assert count == m.steps
 
 
 class Once:
@@ -19,6 +26,21 @@ class Once:
             return False # do not call again
         phase.add_action(once, 0)
 
+class For:
+    def __init__(self, ms):
+        self.ms = ms
+
+    def register_action(self, model, phase, action):
+        count = model.ms_to_steps(self.ms)
+        def for_():
+            nonlocal count
+            action()
+            count -= 1
+            if count < 1:
+                return False
+            else:
+                return 0
+        phase.add_action(for_, 0)
 
 
 class Every:
