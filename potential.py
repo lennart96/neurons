@@ -1,5 +1,7 @@
 from model import *
 
+__all__ = 'Potential',
+
 class Potential:
     def __init__(self, model, owner, start=-70, log=True):
         self.potential = start
