@@ -66,7 +66,7 @@ def test():
     Neuron.connect(n0, n1)
     Neuron.connect(n1, n2)
     m.add_action(n0.fire, Hertz(hz), "bg")
-    m.simulate_seconds(1)
+    m.simulate_seconds(3)
     m.show()
 
 if __name__ == '__main__':
