@@ -1,5 +1,7 @@
 __all__ = 'Once', 'For', 'Every', 'After', 'Continu', 'Network'
 
+from collections import defaultdict
+
 def test():
     m = Model(3*1000)
     out = []
@@ -82,7 +84,6 @@ class Continu:
 def nearest(n):
     return int(n+.5)
 
-
 class Model:
     def __init__(self, T=5000, dt=None):
         self.phases_by_name = {}
@@ -96,6 +97,7 @@ class Model:
         else:
             self.dt = dt
             self.steps_per_second = 1/dt
+        self.logs = defaultdict(list)
 
     def ms_to_steps(self, ms):
         return nearest(ms * self.steps_per_second / 1000)
@@ -105,6 +107,10 @@ class Model:
             self.add_phase(phase)
         phase_ = self.phases_by_name[phase]
         action_ = pattern.register_action(self, phase_, action)
+
+    def add_log(self, name, get_val):
+        log = self.logs[name]
+        self.add_action(lambda:log.append(get_val()), Continu(), "log")
 
     def add_phase(self, *names):
         for name in names:
