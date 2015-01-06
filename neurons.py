@@ -5,7 +5,8 @@ __all__ = 'Neuron',
 
 
 class PreSynapse:
-    def __init__(self, post):
+    def __init__(self, model, post):
+        self.model = model
         self.post = post
 
     def activate(self):
@@ -13,7 +14,8 @@ class PreSynapse:
 
 
 class PostSynapse:
-    def __init__(self):
+    def __init__(self, model):
+        self.model = model
         self.activations = 0
         self.delta_potential = 5
 
@@ -45,8 +47,9 @@ class Neuron:
         model.add_log(self.name + " potential", lambda:self.potential)
 
     def connect(pre, post):
-        synapse_post = PostSynapse()
-        synapse_pre = PreSynapse(synapse_post)
+        model = pre.model
+        synapse_post = PostSynapse(model)
+        synapse_pre = PreSynapse(model, synapse_post)
         pre.axon.append(synapse_pre)
         post.dendrite.append(synapse_post)
         return (synapse_pre,synapse_post)
