@@ -3,10 +3,14 @@ from model import *
 __all__ = 'Potential', 'FixPotential'
 
 class Potential:
-    def __init__(self, model, owner, start=-70, log=True):
-        self.potential = start
+    def __init__(self, model, owner, rest=-70, logdiv=None, log=True):
+        self.potential = rest
+        self.rest = rest
         self.model = model
-        model.add_log(str(owner) + " potential", lambda:self.potential)
+        if logdiv is None:
+            model.add_log(str(owner) + " potential", lambda:self.potential)
+        else:
+            model.add_log(str(owner) + " potential", lambda:(self.potential-rest)/logdiv)
 
     def add(self, ammount):
         self.potential += ammount
@@ -21,6 +25,12 @@ class Potential:
             a.potential -= halftime * (a.potential - avg)
             b.potential -= halftime * (b.potential - avg)
         model.add_action(exchange, Continu(), "potential")
+
+    def get(self):
+        return self.potential
+
+    def set(self, v):
+        self.potential = v
 
 
 class FixPotential(Potential):

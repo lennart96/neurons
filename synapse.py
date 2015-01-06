@@ -1,4 +1,6 @@
+import constant
 from model import *
+from potential import *
 
 __all__ = 'PreSynapse', 'PostSynapse'
 
@@ -12,15 +14,17 @@ class PreSynapse:
 
 
 class PostSynapse:
-    def __init__(self, model):
-        self.model = model
+    def __init__(self, neuron):
+        self.soma = neuron
+        self.model = neuron.model
         self.activations = 0
-        self.delta_potential = 5
+        mul = 20
+        self.delta_potential = 5 * mul
+        self.name = "post-" + neuron.name
+        env = FixPotential(self.model, constant.rest)
+        self.potential = Potential(self.model, self.name, constant.rest, logdiv=mul)
+        self.potential.connect(neuron.potential, 1, 1/mul)
+        self.potential.connect(env, 100, .01)
 
     def activate(self):
-        self.activations += 1
-
-    def collect(self):
-        delta_p = self.activations * self.delta_potential
-        self.activations = 0
-        return delta_p
+        self.potential.add(self.delta_potential)
