@@ -42,8 +42,8 @@ class Neuron:
             pre.activate()
         self.firing = True
         self.potential.set(constant.top)
-        self.model.add_action(self.fall, After(1))
-        self.model.add_action(self.unfire, After(2))
+        self.model.add_action(self.fall, After(2))
+        self.model.add_action(self.unfire, After(3))
 
 
     def unfire(self):
@@ -58,14 +58,14 @@ def test():
     import sys
     from functools import reduce
     hz = int(sys.argv[1]) if len(sys.argv)>1 else 100
-    m = Model(3000)
+    m = Model(30000)
     n0 = Neuron(m)
     n1 = Neuron(m)
     n2 = Neuron(m)
     Neuron.connect(n0, n1)
     Neuron.connect(n1, n2)
     m.add_action(n0.fire, Hertz(hz), "bg")
-    m.simulate_seconds(1)
+    m.simulate_seconds(.5)
     m.show()
 
 if __name__ == '__main__':

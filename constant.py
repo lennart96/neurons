@@ -1,9 +1,9 @@
 rest = -70
 threshold = -55
-top = 30
-bottom = -90
-delta_potential_default = 5
+top = 35
+bottom = -80
+delta_potential_default = 6
 synapse_importantness = 20
-halftime_leak_synapse = 100
-halftime_leak_soma = 100
+halftime_leak_synapse = 3
+halftime_leak_soma = 20
 halftime_synapse_soma = 1
