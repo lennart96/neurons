@@ -1,4 +1,4 @@
-__all__ = 'Once', 'For', 'Every', 'Hertz', 'After', 'Continu', 'Network'
+__all__ = 'Once', 'For', 'Every', 'Hertz', 'After', 'Continu', 'Model'
 
 from collections import defaultdict
 
