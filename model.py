@@ -104,6 +104,9 @@ class Model:
     def ms_to_steps(self, ms):
         return nearest(ms * self.steps_per_second / 1000)
 
+    def halftime(self, ms):
+        return 0.5 ** (1/self.ms_to_steps(ms))
+
     def add_action(self, action, pattern=Once(), phase="default"):
         if phase not in self.phases_by_name:
             self.add_phase(phase)
@@ -144,6 +147,14 @@ class Model:
         steps = nearest(self.steps_per_second * seconds)
         for _ in range(steps):
             self.step()
+
+    def show(self):
+        import matplotlib.pyplot as plt
+        xs = [x/self.steps_per_second for x in range(self.steps)]
+        for name,values in self.logs.items():
+            plt.plot(xs, values, label=name)
+        plt.legend()
+        plt.show()
 
 
 class Phase:
