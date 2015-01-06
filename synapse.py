@@ -20,7 +20,7 @@ class PostSynapse:
         self.activations = 0
         mul = constant.synapse_importantness
         self.delta_potential = constant.delta_potential_default * mul
-        self.name = "postsynapse of" + neuron.name
+        self.name = neuron.name + " post synaptic terminal"
         env = FixPotential(self.model, constant.rest)
         self.potential = Potential(self.model, self.name, constant.rest, logdiv=mul)
         self.potential.connect(neuron.potential, constant.halftime_synapse_soma, 1/mul)
