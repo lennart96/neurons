@@ -18,13 +18,13 @@ class PostSynapse:
         self.soma = neuron
         self.model = neuron.model
         self.activations = 0
-        mul = 20
-        self.delta_potential = 5 * mul
-        self.name = "post-" + neuron.name
+        mul = constant.synapse_importantness
+        self.delta_potential = constant.delta_potential_default * mul
+        self.name = "postsynapse of" + neuron.name
         env = FixPotential(self.model, constant.rest)
         self.potential = Potential(self.model, self.name, constant.rest, logdiv=mul)
-        self.potential.connect(neuron.potential, 1, 1/mul)
-        self.potential.connect(env, 100, .01)
+        self.potential.connect(neuron.potential, constant.halftime_synapse_soma, 1/mul)
+        self.potential.connect(env, constant.halftime_leak_synapse, .5)
 
     def activate(self):
         self.potential.add(self.delta_potential)

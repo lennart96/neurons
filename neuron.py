@@ -18,11 +18,10 @@ class Neuron:
 
         env = FixPotential(model, constant.rest)
         self.potential = Potential(model, self.name, constant.rest)
-        self.potential.connect(env, halftime=50, dist=.1)
+        self.potential.connect(env, halftime=constant.halftime_leak_soma, dist=.5)
 
         self.model = model
         self.firing = False
-        self.leak_halftime = model.halftime(100)
         model.add_action(self.check, Continu(), "check")
 
     def connect(pre, post):
