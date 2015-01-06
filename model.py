@@ -1,4 +1,4 @@
-__all__ = 'Once', 'For', 'Every', 'After', 'Continu', 'Network'
+__all__ = 'Once', 'For', 'Every', 'Hertz', 'After', 'Continu', 'Network'
 
 from collections import defaultdict
 
@@ -19,7 +19,6 @@ def test():
     correct = [0, 0, 1, 2, 3, 4, 5, 9, 9, 18, 27]
     assert out == correct
     assert count == m.steps
-
 
 class Once:
     def register_action(self, model, phase, action):
@@ -60,6 +59,9 @@ class Every:
         else:
             phase.add_action(every, steps)
 
+class Hertz(Every):
+    def __init__(self, hz, imm=False):
+        super().__init__(1000/hz, imm)
 
 class After:
     def __init__(self, ms):
