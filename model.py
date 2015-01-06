@@ -151,8 +151,8 @@ class Model:
     def show(self):
         import matplotlib.pyplot as plt
         xs = [x/self.steps_per_second for x in range(self.steps)]
-        for name,values in self.logs.items():
-            plt.plot(xs, values, label=name)
+        for name in sorted(self.logs.keys()):
+            plt.plot(xs, self.logs[name], label=name)
         plt.legend()
         plt.show()
 
