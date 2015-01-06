@@ -56,14 +56,16 @@ class Neuron:
 
 
 def test():
+    import sys
     from functools import reduce
+    hz = int(sys.argv[1]) if len(sys.argv)>1 else 100
     m = Model(3000)
     n0 = Neuron(m)
     n1 = Neuron(m)
     n2 = Neuron(m)
     Neuron.connect(n0, n1)
     Neuron.connect(n1, n2)
-    m.add_action(n0.fire, Hertz(100), "bg")
+    m.add_action(n0.fire, Hertz(hz), "bg")
     m.simulate_seconds(1)
     m.show()
 
