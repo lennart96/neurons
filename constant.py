@@ -7,3 +7,4 @@ synapse_importantness = 20
 halftime_leak_synapse = 3
 halftime_leak_soma = 20
 halftime_synapse_soma = 1
+halftime_leak_ca2 = 50

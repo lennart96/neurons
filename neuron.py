@@ -55,7 +55,6 @@ class Neuron:
 
 def test():
     import sys
-    from functools import reduce
     hz = int(sys.argv[1]) if len(sys.argv)>1 else 100
     m = Model(10000)
     n0 = Neuron(m)
@@ -66,6 +65,23 @@ def test():
     m.add_action(n0.fire, Hertz(hz), "experiment")
     m.simulate_seconds(.5)
     m.show()
+
+def measure_ca2():
+    import sys
+    hz = int(sys.argv[1]) if len(sys.argv)>1 else 100
+    m = Model(10000)
+    n0 = Neuron(m)
+    n1 = Neuron(m)
+    pre,post = Neuron.connect(n0, n1)
+    total = 0
+    def log():
+        nonlocal total
+        total += post.ca.get()*m.dt
+    m.add_action(n0.fire, Hertz(hz), "experiment")
+    m.add_action(log, Continu(), "experiment")
+    m.remove_phase("log")
+    m.simulate_seconds(10)
+    print(total/10)
 
 if __name__ == '__main__':
     test()
