@@ -87,15 +87,15 @@ def nearest(n):
     return int(n+.5)
 
 class Model:
-    def __init__(self, T=5000, dt=None):
+    def __init__(self, f=5000, dt=None):
         self.phases_by_name = {}
         self.phases_sorted = []
         self.steps = 0
         if dt is None:
-            self.steps_per_second = T
-            self.dt = 1/T
-        elif T == 5000:
-            raise ArgumentException("can't set T and dt")
+            self.steps_per_second = f
+            self.dt = 1/f
+        elif f == 5000:
+            raise ArgumentException("can't set f and dt")
         else:
             self.dt = dt
             self.steps_per_second = 1/dt
