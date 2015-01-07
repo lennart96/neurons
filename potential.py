@@ -3,14 +3,13 @@ from model import *
 __all__ = 'Potential', 'FixPotential'
 
 class Potential:
-    def __init__(self, model, owner, rest=-70, logdiv=None, log=True):
+    def __init__(self, model, owner, rest=-70, logdiv=None, log=True, name="potential"):
         self.potential = rest
         self.rest = rest
         self.model = model
-        if logdiv is None:
-            model.add_log(str(owner) + " potential", lambda:self.potential)
-        else:
-            model.add_log(str(owner) + " potential", lambda:(self.potential-rest)/logdiv)
+        self.name = str(owner) + " " + str(name)
+        model.add_log(self.name, self.get)
+        self.logdiv = logdiv
 
     def add(self, ammount):
         self.potential += ammount
@@ -27,10 +26,16 @@ class Potential:
         model.add_action(exchange, Continu(), "potential")
 
     def get(self):
-        return self.potential
+        if self.logdiv is None:
+            return self.potential
+        else:
+            return (self.potential-self.rest) / self.logdiv
 
     def set(self, v):
-        self.potential = v
+        if self.logdiv is None:
+            self.potential = v
+        else:
+            raise NotImplementedError("refactor NormPotential out Potential")
 
 
 class FixPotential(Potential):
